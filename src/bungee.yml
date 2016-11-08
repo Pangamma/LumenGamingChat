@@ -1,0 +1,4 @@
+name: LumenGamingChatProxy
+author: Pangamma
+version: 0.1
+main: com.lumengaming.chat.bungee.Main

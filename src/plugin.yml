@@ -1,0 +1,8 @@
+name: SocketMessenger
+author: Pangamma
+version: 0.1
+main: com.lumengaming.chat.spigot.Main
+description: The spigot client for the chat.
+commands:
+  get:
+    aliases: ['tron','trong']

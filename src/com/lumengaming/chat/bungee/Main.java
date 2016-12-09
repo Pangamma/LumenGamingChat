@@ -1,28 +1,29 @@
 package com.lumengaming.chat.bungee;
 
 import com.lumengaming.chat.*;
+import com.lumengaming.chat.asyncnetwork.Server;
 import java.util.HashMap;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class Main extends Plugin {
-    public static HashMap<String, String> nicks = new HashMap<String, String>();
-    public static HashMap<String, Integer> points = new HashMap<String, Integer>();
-    // i know. there is a better way :)
+    private Server server;
 
     @Override
     public void onEnable(){
+        this.server = new Server();
+        this.server.start();
         System.out.println("ENABLED THE THINGY WITH THE LUMEN CHAT.");
-        nicks.put("TomiCake", "Mushroom");
-        nicks.put("Pangamma", "aBetterName");
-  
-        points.put("TomiCake", 1223);
-        points.put("Pangamma", 124);
-        // i know. there is a much better way :)
-  
-        BungeeCord.getInstance().getPluginManager().registerListener(this, new ChannelListener());
+        BungeeCord.getInstance().getPluginManager().registerListener(this, new ChannelListener(this));
+    }
+    
+    @Override
+    public void onDisable(){
+        this.server.stop();
+    }
 
-        BungeeCord.getInstance().registerChannel("Return");
+    public Server getServer() {
+        return server;
     }
 
 }

@@ -1,42 +1,60 @@
 package com.lumengaming.chat.spigot;
 
-import com.lumengaming.chat.*;
+import com.lumengaming.chat.asyncnetwork.Client;
+import com.lumengaming.chat.spigot.listeners.ChatListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author Taylor
  */
 public class Main extends JavaPlugin{
-    private PluginChannelListener pcl;
+
+    private Client client;
+
+    /**
+     * We're going to register a channel, and send a test piece of info to BungeeCord.
+     * The classic ping pong!
+     */
     @Override
     public void onEnable(){
-        this.pcl = new PluginChannelListener();
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        // allow to send to BungeeCord
-        Bukkit.getMessenger().registerIncomingPluginChannel(this, "Return", pcl);
-        // gets a Message from Bungee
- 
-        getCommand("get").setExecutor(this);
-    } 
+        this.client = new Client();
+        this.client.addReadListener(this.getName(), (byte[] data)->{
+            LumenGamingMessageEvent e = new LumenGamingMessageEvent(data);
+            Bukkit.getPluginManager().callEvent(e);
+        });
+        client.start();
+        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+    }
     
     @Override
-    public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-        if(sender instanceof Player){ // p.s. its only possible if its playerbinded not server!
-            Player p = (Player) sender;
-            if(args.length == 1){
-                p.sendMessage(ChatColor.AQUA + "Sending... ");
-                String s = (String) this.pcl.get(p, args[0].equalsIgnoreCase("nick"));
-                p.sendMessage(ChatColor.BLUE + "Got: " + "\n" + ChatColor.GREEN + s);
-            }else{
-                p.sendMessage("/get nick");
+    public void onDisable(){
+        client.removeReadListener(this.getName());
+        client.stop();
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("test")) {
+            
+            Bukkit.broadcastMessage("<Sleeping12>");
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
+            Bukkit.broadcastMessage("</Sleeping12>");
+            return true;
         }
-        return true;
- 
+        return false;
+    }
+    
+    public Client getClient() {
+        return this.client;
     }
 }

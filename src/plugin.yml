@@ -1,8 +1,8 @@
-name: SocketMessenger
+name: LumenGamingChat
 author: Pangamma
 version: 0.1
 main: com.lumengaming.chat.spigot.Main
 description: The spigot client for the chat.
 commands:
-  get:
+  test:
     aliases: ['tron','trong']

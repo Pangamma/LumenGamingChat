@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lumengaming.chat.asyncnetwork;
+package com.lumengaming.chat.asyncnetwork.tests;
 
+import com.lumengaming.chat.asyncnetwork.Client;
+import com.lumengaming.chat.asyncnetwork.Server;
 import com.lumengaming.chat.asyncnetwork.utility.Log;
 import java.util.logging.Level;
 
@@ -12,7 +14,7 @@ import java.util.logging.Level;
  *
  * @author Taylor
  */
-public class AsyncMainSingle1 {
+public class AsyncMainSingle {
 
     /**
      * @param args the command line arguments
@@ -27,9 +29,6 @@ public class AsyncMainSingle1 {
         Client client2 = new Client();
         Client client3 = new Client();
         Client client4 = new Client();
-        client4.addReadListener("TEST", (byte[] data) ->{
-            System.err.println(new String(data));
-        });
         Log.Client(Level.INFO, "Client Starting");
         client.start();
         client2.start();
@@ -40,8 +39,8 @@ public class AsyncMainSingle1 {
         for(int i = 0; i < 50; i++){
             client.send("a="+i);
             try { Thread.sleep(10L);} catch (InterruptedException ex) {}
-//            client2.send("b="+i);
-//            client3.send("c="+i);
+            client2.send("b="+i);
+            client3.send("c="+i);
             try { Thread.sleep(50L);} catch (InterruptedException ex) {}
         }
         client.send("Hello.");

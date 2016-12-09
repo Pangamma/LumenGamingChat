@@ -1,6 +1,8 @@
-package com.lumengaming.chat.asyncnetwork;
+package com.lumengaming.chat.asyncnetwork.tests;
 
 import com.lumengaming.chat.asyncnetwork.*;
+import com.lumengaming.chat.asyncnetwork.Client;
+import com.lumengaming.chat.asyncnetwork.Server;
 import com.lumengaming.chat.asyncnetwork.utility.Log;
 import java.util.ArrayList;
 import java.util.logging.Level;
